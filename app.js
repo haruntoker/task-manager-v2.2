@@ -1,40 +1,39 @@
 const express = require('express')
-const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-
+const app = express();
 
 app.use(express.json())
 
 
 
-
-app.use('/api/v1/tasks')
-
-
+const tasks = require('./routes/tasks')
+app.use('/api/v1/tasks', tasks)
 
 
 
-// dotenv & DB set-up
 
+
+
+// db & dotenv
 dotenv.config()
 
-const PORT = process.env.PORT || 6000
+const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
 
-
-const connect = async()=>{
+const connect = async() =>{
     try {
         await mongoose.connect(MONGO_URI, {
-            useUnifiedTopology : true,
-            useNewUrlParser : true,
-            useFindAndModify: true
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+            useFindAndModify: false
+        });
+
+        console.log("DB connected succesfully!");
+        app.listen(PORT, () =>{
+            console.log(`Server running on port ${PORT}`);
         })
 
-        console.log("DB connected successfully!");
-        app.listen(PORT, ()=>{
-            console.log(`App listening port ${PORT}`);
-        })
     } catch (error) {
         console.log(error);
     }
