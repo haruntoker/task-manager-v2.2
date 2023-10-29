@@ -3,8 +3,10 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const app = express();
 
-app.use(express.json())
 
+
+app.use(express.json())
+app.use(express.static('./public'))
 
 
 const tasks = require('./routes/tasks')
